@@ -21,15 +21,17 @@ class TransferAccountTest {
     @Test
     void test() throws InterruptedException {
         ThreadPoolTaskExecutor threadPoolTaskExecutor = ThreadPool.getInstances();
-        CountDownLatch cdl = new CountDownLatch(300);
+        CountDownLatch cdl = new CountDownLatch(600);
         for (int i = 0; i < 300; i++) {
             threadPoolTaskExecutor.execute(() -> {
+                cdl.countDown();
                 System.out.println(Thread.currentThread().getName()+"xiaoMingToXiaoHong");
                 xiaoMingToXiaoHong();
             });
         }
         for (int i = 0; i < 300; i++) {
             threadPoolTaskExecutor.execute(() -> {
+                cdl.countDown();
                 System.out.println(Thread.currentThread().getName()+"xiaoQiangToXiaoHong");
                 xiaoQiangToXiaoHong();
             });
