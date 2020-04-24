@@ -33,19 +33,20 @@ public class Transfer {
      */
     @Transactional(rollbackOn = Exception.class)
     public void testTransfer(Long idFrom, Long idTo) {
-
-        //SQL语句 ： select * from users where id=？
-        Optional<Users> byId = userDao.findById(idFrom);
-        Users from = byId.get();
-        Account fromAccount = accountDao.findAccountByUserId(from.getUserId());
-        Optional<Users> byId1 = userDao.findById(idTo);
-        Users to = byId1.get();
-        Account toAccount = accountDao.findAccountByUserId(to.getUserId());
-
-        // System.out.println(from.getUserName() + "向" + to.getUserName() + "转账 ");
         readWriteLock.writeLock().lock();
         try {
 
+            //SQL语句 ： select * from users where id=？
+            Optional<Users> byId = userDao.findById(idFrom);
+            Users from = byId.get();
+            Account fromAccount = accountDao.findAccountByUserId(from.getUserId());
+            Optional<Users> byId1 = userDao.findById(idTo);
+            Users to = byId1.get();
+            Account toAccount = accountDao.findAccountByUserId(to.getUserId());
+
+            System.out.println(Thread.currentThread().getName() + "------>" + from.getUserName() + "向" + to.getUserName() + "转账开始");
+
+            delay(10L);
             //转账方减10元
             BigDecimal money = fromAccount.getMoney();
             BigDecimal tenYuan = new BigDecimal(10);
@@ -54,14 +55,14 @@ public class Transfer {
             accountDao.save(fromAccount);
 
             //这里加上10毫秒的延时，用于测试
-            delay(3L);
+            delay(10L);
 
             //收款方增加10元
             BigDecimal toMoney = toAccount.getMoney();
             BigDecimal add = toMoney.add(tenYuan);
             toAccount.setMoney(add);
             accountDao.save(toAccount);
-            //System.out.println(from.getUserName() + "向" + to.getUserName() + "转账完毕---");
+            System.out.println(Thread.currentThread().getName() + "------>" + from.getUserName() + "向" + to.getUserName() + "转账完毕---");
         } finally {
             readWriteLock.writeLock().unlock();
         }

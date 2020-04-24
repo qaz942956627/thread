@@ -22,8 +22,8 @@ public class ThreadPool {
             synchronized (ThreadPool.class) {
                 if (THREAD_POOL_TASK_EXECUTOR == null) {
                     ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
-                    executor.setCorePoolSize(5);
-                    executor.setMaxPoolSize(10);
+                    executor.setCorePoolSize(6);
+                    executor.setMaxPoolSize(12);
                     executor.setQueueCapacity(999);
                     executor.setThreadNamePrefix("thread-pool");
                     //executor.setThreadGroupName("Group1");
