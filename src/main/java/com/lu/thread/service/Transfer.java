@@ -34,15 +34,15 @@ public class Transfer {
     @Transactional(rollbackOn = Exception.class)
     public void testTransfer(Long idFrom, Long idTo) {
 
-            //SQL语句 ： select * from users where id=？
-            Optional<Users> byId = userDao.findById(idFrom);
-            Users from = byId.get();
-            Account fromAccount = accountDao.findAccountByUserId(from.getUserId());
-            Optional<Users> byId1 = userDao.findById(idTo);
-            Users to = byId1.get();
-            Account toAccount = accountDao.findAccountByUserId(to.getUserId());
+        //SQL语句 ： select * from users where id=？
+        Optional<Users> byId = userDao.findById(idFrom);
+        Users from = byId.get();
+        Account fromAccount = accountDao.findAccountByUserId(from.getUserId());
+        Optional<Users> byId1 = userDao.findById(idTo);
+        Users to = byId1.get();
+        Account toAccount = accountDao.findAccountByUserId(to.getUserId());
 
-           // System.out.println(from.getUserName() + "向" + to.getUserName() + "转账 ");
+        // System.out.println(from.getUserName() + "向" + to.getUserName() + "转账 ");
         readWriteLock.writeLock().lock();
         try {
 
@@ -96,7 +96,7 @@ public class Transfer {
         }
     }
 
-    public void reset(){
+    public void reset() {
         Account xiaoming = accountDao.getOne(1L);
         BigDecimal bigDecimal = new BigDecimal(10000);
         xiaoming.setMoney(bigDecimal);
